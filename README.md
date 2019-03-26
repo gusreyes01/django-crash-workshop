@@ -14,6 +14,7 @@
 1.5. Crea un modelo *Peliculas*
   * Agrega los siguientes atributos:
      * Nombre Película (CharField)
+     * Portada (ImageField)
      * Reseña (TextField)
      * Genero (CharField choice)
      * Stock (PositiveIntegerField)
@@ -25,14 +26,20 @@
       * Crea un Foreign Key a Películas para que puedas indicar que peelícula rentaron.
       
 1.8. Crea un listado del catalogo de películas disponibles.
+  * Asegurate de mostrar la portada de la película, el título y los títulos disponibles en una tabla.
+  * Utiliza el framework CSS de tu preferencia para mejorar los estilos del listado. (Utiliza correctamente las referencias a los archivos estáticos)
 
 1.9. Crea una vista de login para tus usuarios.
+  * Solamente usuarios que hayan iniciado sesión podrán rentar.
 
 1.10. Habilita las vistas de administración de películas para que el staff dar de alta nuevos títulos.
 
 1.11. Crea un botón de rentar que permita a los usuarios rentar si aún hay stock disponible. En caso de que no, se deberá notificar un error.
 
 1.12. Crea un formulario para que los clientes puedan dejar sugerencias de Películas que quieran que sean agregadas al catálogo.
+
+
+Bonus: Agrega pruebas a la función de renta.
 
 ### Uno de tus clientes (VideoCentro) quiere exponer tus títulos desde su sitio web.
 
