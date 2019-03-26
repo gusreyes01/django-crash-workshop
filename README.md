@@ -15,6 +15,7 @@
   * Agrega los siguientes atributos:
      * Nombre Película (CharField)
      * Reseña (TextField)
+     * Genero (CharField choice)
      * Stock (PositiveIntegerField)
      * Disponible (BooleanField)
   * Crea una propiedad en el modelo Películas que calcule el número de disponible en base a los títulos ya rentados.
@@ -31,12 +32,14 @@
 
 1.11. Crea un botón de rentar que permita a los usuarios rentar si aún hay stock disponible. En caso de que no, se deberá notificar un error.
 
+1.12. Crea un formulario para que los clientes puedan dejar sugerencias de Películas que quieran que sean agregadas al catálogo.
+
 ### Uno de tus clientes (VideoCentro) quiere exponer tus títulos desde su sitio web.
 
 2.0 Crea una propiedad ```as_list_item_dict``` en el modelo *Películas* .
 
 2.1 Utiliza la Crea un endpoint que liste las Películas disponibles.
 
-2.2 Crea un endpoint para permitir rentar desde el sitio web. (Asegurate de poder identificar quién realizó la renta.
+2.2 Crea un endpoint para permitir rentar desde el sitio web. (Asegurate de poder identificar quién realizó la renta).
 
 
