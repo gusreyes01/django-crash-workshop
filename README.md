@@ -1,52 +1,54 @@
-# django-crash-workshop
+### Instalamos virtualenv
 
+`pip install virtualenv`
 
-### Acabas de abrir un nuevo centro digital de renta de películas y requieres exponer tu catálogo de títulos disponibles y que tus clientes puedan rentar a través de el. ¡Manos a la obra!
+### Creamos el ambiente virtual
 
-1.1. Crea un ambiente virtual para tu proyecto utilizando Python3
+`virtualenv workshop`
 
-1.2. Instala los requerimientos incluidos en el archivo requirements.txt
+### Activamos el ambiente virtual
 
-1.3. Genera una nueva base de datos con las tablas iniciales de Django 2.0
+`source bin/activate`
 
-1.4. Crea una nueva app inicial para tu proyecto
+### Instalamos Django por primera vez
 
-1.5. Crea un modelo *Peliculas*
-  * Agrega los siguientes atributos:
-     * Nombre Película (CharField)
-     * Portada (ImageField)
-     * Reseña (TextField)
-     * Genero (CharField choice)
-     * Stock (PositiveIntegerField)
-     * Disponible (BooleanField)
-  * Crea una propiedad en el modelo Películas que calcule el número de disponible en base a los títulos ya rentados.
+(workshop)$: `pip install django`
+
+### Creamos el archivo requirements.txt
+
+(workshop)$: `pip freeze > requirements.txt`
+
+### Iniciamos un nuevo proyecto
+django-admin startproject workshop
+
+### Dentro del proyecto
+
+### Corremos las migraciones iniciales de Django
+(workshop)$: `python manage.py migrate`
+
+### Iniciamos una nueva app
+(workshop)$: `python manage.py startapp core`
+* Agrego mi app “core” a installed apps
+
+### Corremos el servidor de Django
+(workshop)$: python manage.py runserver
+* Lo terminamos con Ctrl + C
+
+### Creamos un superusuario
+(workshop)$: python manage.py createsuperuser
+
+### Creamos la primera vista “home” en nuestro archivo views.py de la app “core”
   
-1.6. Crea un modelo *Rentas*
-  * Crea un Foreign Key a Usuarios para que puedas guardar las rentas de los usuarios.
-      * Crea un Foreign Key a Películas para que puedas indicar que peelícula rentaron.
-      
-1.8. Crea un listado del catalogo de películas disponibles.
-  * Asegurate de mostrar la portada de la película, el título y los títulos disponibles en una tabla.
-  * Utiliza el framework CSS de tu preferencia para mejorar los estilos del listado. (Utiliza correctamente las referencias a los archivos estáticos)
+### Creamos carpeta de “templates” en el proyecto
 
-1.9. Crea una vista de login para tus usuarios.
-  * Solamente usuarios que hayan iniciado sesión podrán rentar.
+### Referenciamos la carpeta templates en APP_DIRS del archivo settings.py
 
-1.10. Habilita las vistas de administración de películas para que el staff dar de alta nuevos títulos.
+### Creamos modelos Employee y Role
 
-1.11. Crea un botón de rentar que permita a los usuarios rentar si aún hay stock disponible. En caso de que no, se deberá notificar un error.
-
-1.12. Crea un formulario para que los clientes puedan dejar sugerencias de Películas que quieran que sean agregadas al catálogo.
-
-
-Bonus: Agrega pruebas a la función de renta.
-
-### Uno de tus clientes (VideoCentro) quiere exponer tus títulos desde su sitio web.
-
-2.0 Crea una propiedad ```as_list_item_dict``` en el modelo *Películas* .
-
-2.1 Utiliza la Crea un endpoint que liste las Películas disponibles.
-
-2.2 Crea un endpoint para permitir rentar desde el sitio web. (Asegurate de poder identificar quién realizó la renta).
-
-
+### Creamos las migraciones el servidor
+(workshop)$: `python manage.py makemigrations`
+ 
+### Ejecutamos las migraciones 
+ 
+(workshop)$: `python manage.py migrate`
+   
