@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>Lista de empleados</h1>
+        <a href="{% url 'employee_create' %}">
+            <button class="button btn-default">Crear empleado</button>
+        </a>
+        <table class="table">
+            {% for employee in employees %}
+                <tr>
+                    <td><a href="{% url 'employee_detail' employee.id %}">{{ employee.get_full_name }}</a></td>
+                    <td>${{ employee.salary|intcomma }}</td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

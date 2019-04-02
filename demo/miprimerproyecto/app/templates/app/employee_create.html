@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Crear empleado</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-12">
+                First name:
+                <input type="text" id="id_first_name" name="first_name">
+            </div>
+            <div class="col-md-12">
+                Email:
+                <input type="email" id="id_email" name="email">
+            </div>
+            <div class="col-md-12">
+                Password:
+                <input type="password" id="id_password" name="password">
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">{{ employee_form.salary.label }} {{ employee_form.salary }}</div>
+            <div class="col-md-12">{{ employee_form.role.label }} {{ employee_form.role }}</div>
+        </div>
+        <input class="button btn-success" type="submit">
+    </form>
+
+{% endblock %}
