@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ### Instalamos virtualenv
+=======
+# django-crash-workshop (ejercicios)
+>>>>>>> 8455104756d8dd87a7fb32c6fed2ccfb9a252caa
 
 `pip install virtualenv`
 

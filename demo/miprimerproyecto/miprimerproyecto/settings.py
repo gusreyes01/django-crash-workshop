@@ -128,7 +128,7 @@ LOG_LOCATION = os.path.join(os.path.dirname(__file__), "logs/")
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse',

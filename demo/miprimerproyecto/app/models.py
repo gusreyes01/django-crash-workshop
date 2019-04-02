@@ -1,13 +1,16 @@
+import logging
+from threading import Thread
+
 from django.contrib.auth.models import User
-from django.core import signals
 from django.db import models
-
-
 # Create your models here.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from app.logger import EmployeeLogger
 from app.extras import send_mail_wrapper
+
+logger = logging.getLogger(__name__)
 
 
 class Role(models.Model):
@@ -47,7 +50,27 @@ class Employee(models.Model):
         return self.user.get_full_name()
 
 
-# method for updating
+# 0. Disparamos una llamada a un post_save desde la clase Employee
 @receiver(post_save, sender=Employee, dispatch_uid="post_post_save")
-def post_post_save(sender, instance, **kwargs):
-    send_mail_wrapper('New Employee', 'mail/new_employee_mail.html', instance, [])
+def post_post_save(sender, instance=None, created=False, **kwargs):
+    try:
+        # 1. Solamente enviamos el correo para nuevos usuarios
+        if created:
+            EmployeeLogger.log('Starting post save logging...')
+
+            mail_kwargs = {
+                'context': {'employee': instance, 'sender': sender},
+                'template': 'app/mail/new_employee_mail.html',
+                'title': 'New Employee',
+                'recipients': ['gusreyes01@gmail.com'],
+            }
+
+            # 2. Iniciamos un thread para no detener la petición mientras se envía el correo.
+            thr = Thread(target=send_mail_wrapper,
+                         kwargs=mail_kwargs)
+            thr.start()
+    except Exception as e:
+        # 2. En caso de error escribimos en el log
+
+        print('Something went wrong: {}'.format(e))
+        EmployeeLogger.error(e)

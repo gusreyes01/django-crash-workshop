@@ -1,9 +1,10 @@
-import base64
 from builtins import Exception
+
+import base64
+from django.http import HttpResponse
 from functools import wraps
 
-from api.logger import ApiAuthenticationLogger
-from django.http import HttpResponse
+from app.logger import ApiAuthenticationLogger
 
 
 def http_basic_auth(func):
