@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-### Instalamos virtualenv
-=======
 # django-crash-workshop (ejercicios)
->>>>>>> 8455104756d8dd87a7fb32c6fed2ccfb9a252caa
+
+### Instalamos virtualenv
 
 `pip install virtualenv`
 
@@ -23,7 +21,7 @@
 (workshop)$: `pip freeze > requirements.txt`
 
 ### Iniciamos un nuevo proyecto
-django-admin startproject workshop
+(workshop)$: `django-admin startproject workshop`
 
 ### Dentro del proyecto
 
