@@ -1,4 +1,4 @@
-# django-crash-workshop
+# django-crash-workshop (ejercicios)
 
 
 ### Acabas de abrir un nuevo centro digital de renta de películas y requieres exponer tu catálogo de títulos disponibles y que tus clientes puedan rentar a través de el. ¡Manos a la obra!
