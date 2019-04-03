@@ -44,10 +44,14 @@ class Employee(models.Model):
 
     class Meta:
         verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleado'
+        verbose_name_plural = 'Empleados'
 
     def __str__(self):
         return self.user.get_full_name()
+
+    def as_list_item_dict(self):
+        return {'name': self.get_full_name}
+
 
 
 # 0. Disparamos una llamada a un post_save desde la clase Employee
