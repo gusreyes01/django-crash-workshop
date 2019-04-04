@@ -19,6 +19,8 @@ from django.urls import path, include
 
 from app.views import profile
 
+
+
 urlpatterns = [
     path('employee/', include('app.urls')),
     path('admin/', admin.site.urls),

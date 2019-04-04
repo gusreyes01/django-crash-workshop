@@ -7,8 +7,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from app.logger import EmployeeLogger
 from app.extras import send_mail_wrapper
+from app.logger import EmployeeLogger
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +50,7 @@ class Employee(models.Model):
         return self.user.get_full_name()
 
     def as_list_item_dict(self):
-        return {'name': self.get_full_name}
-
+        return {'id': self.pk, 'name': self.get_full_name, 'salary': self.salary}
 
 
 # 0. Disparamos una llamada a un post_save desde la clase Employee

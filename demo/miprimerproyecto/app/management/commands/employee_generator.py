@@ -1,9 +1,40 @@
-import names
 import random
+
+import names
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 
 from app.models import Employee, Role
+
+
+# Refactoring del método crear empleado para poder reutilizarlo
+def create_n_random_employees(number_of_employees):
+    employees_list = []
+    for x in range(number_of_employees):
+        try:
+            salary = random.randrange(3000, 12000)
+
+            name_list = names.get_full_name().split(' ')
+            first_name = name_list[0]
+            last_name = name_list[1]
+
+            user = User.objects.create_user(username=first_name + last_name,
+                                            first_name=first_name,
+                                            last_name=last_name,
+                                            email='{}@gmail.com'.format(name_list[0]),
+                                            password='somepass')
+
+            employee = Employee(user=user, salary=salary,
+                                role=Role.objects.get(pk='1'))
+
+            employee.save()
+            employees_list.append(employee)
+            print('Successfully generated Employee name {}'.format(first_name))
+
+
+        except Exception as e:
+            print('Employee creation failed [{}]'.format(e))
+    return employees_list
 
 
 class Command(BaseCommand):
@@ -21,29 +52,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         number_of_employees = int(options['number_of_employees'])
-
-
-        for x in range(number_of_employees):
-            try:
-                salary = random.randrange(3000, 12000)
-
-                name_list = names.get_full_name().split(' ')
-                first_name = name_list[0]
-                last_name = name_list[1]
-
-                user = User.objects.create_user(username=first_name,
-                                                first_name=first_name,
-                                                last_name=last_name,
-                                                email='{}@gmail.com'.format(name_list[0]),
-                                                password='somepass')
-
-                employee = Employee(user=user, salary=salary,
-                                    role=Role.objects.get(pk='1'))
-
-                employee.save()
-                self.stdout.write('Successfully generated Employee name {}'.format(first_name))
-
-            except Exception as e:
-                self.stdout.write('Employee creation failed [{}]'.format(e))
-
-
+        create_n_random_employees(number_of_employees)
