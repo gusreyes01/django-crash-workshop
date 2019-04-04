@@ -34,5 +34,7 @@ class EmployeeList(generics.ListAPIView):
     serializer_class = EmployeeSerializer
     permission_classes = (IsAdminUser,)
 
+
 class EmployeeCreate(generics.CreateAPIView):
-    pass
+    model = Employee
+    serializer_class = EmployeeSerializer

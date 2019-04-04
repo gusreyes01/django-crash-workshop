@@ -7,27 +7,33 @@ from django.core.management.base import BaseCommand
 from app.models import Employee, Role
 
 
+def create_employee():
+    salary = random.randrange(3000, 12000)
+
+    name_list = names.get_full_name().split(' ')
+    first_name = name_list[0]
+    last_name = name_list[1]
+
+    user = User.objects.create_user(username=first_name + last_name,
+                                    first_name=first_name,
+                                    last_name=last_name,
+                                    email='{}@gmail.com'.format(name_list[0]),
+                                    password='somepass')
+
+    employee = Employee(user=user, salary=salary,
+                        role=Role.objects.get(pk='1'))
+
+    employee.save()
+
+    return employee
+
+
 # Refactoring del método crear empleado para poder reutilizarlo
 def create_n_random_employees(number_of_employees):
     employees_list = []
     for x in range(number_of_employees):
         try:
-            salary = random.randrange(3000, 12000)
-
-            name_list = names.get_full_name().split(' ')
-            first_name = name_list[0]
-            last_name = name_list[1]
-
-            user = User.objects.create_user(username=first_name + last_name,
-                                            first_name=first_name,
-                                            last_name=last_name,
-                                            email='{}@gmail.com'.format(name_list[0]),
-                                            password='somepass')
-
-            employee = Employee(user=user, salary=salary,
-                                role=Role.objects.get(pk='1'))
-
-            employee.save()
+            employee = create_employee()
             employees_list.append(employee)
             print('Successfully generated Employee name {}'.format(first_name))
 
