@@ -20,6 +20,11 @@
 
 (workshop)$: `pip freeze > requirements.txt`
 
+
+### (En caso de que sea un proyecto existente) Leemos el archivo requirements.txt
+
+(workshop)$: `pip install -r requirements.txt`
+
 ### Iniciamos un nuevo proyecto
 (workshop)$: `django-admin startproject workshop`
 
