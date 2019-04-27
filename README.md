@@ -34,8 +34,8 @@
 (workshop)$: `python manage.py migrate`
 
 ### Iniciamos una nueva app
-(workshop)$: `python manage.py startapp core`
-* Agrego mi app “core” a installed apps
+(workshop)$: `python manage.py startapp movies`
+* Agrego mi app “movies” a installed apps
 
 ### Corremos el servidor de Django
 (workshop)$: python manage.py runserver
@@ -44,7 +44,7 @@
 ### Creamos un superusuario
 (workshop)$: python manage.py createsuperuser
 
-### Creamos la primera vista “home” en nuestro archivo views.py de la app “core”
+### Creamos la primera vista “home” en nuestro archivo views.py de la app “movies”
   
 ### Creamos carpeta de “templates” en el proyecto
 
