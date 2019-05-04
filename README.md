@@ -26,7 +26,7 @@
 (workshop)$: `pip install -r requirements.txt`
 
 ### Iniciamos un nuevo proyecto
-(workshop)$: `django-admin startproject workshop`
+(workshop)$: `django-admin startproject <nombre_proyecto>`
 
 ### Dentro del proyecto
 
