@@ -15,7 +15,7 @@ jobs:
       DJANGO_DEBUG: "false"
       EMAIL_BACKEND: django.core.mail.backends.locmem.EmailBackend
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
