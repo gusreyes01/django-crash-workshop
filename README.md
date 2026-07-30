@@ -1,61 +1,50 @@
-# django-crash-workshop (ejercicios)
+# Django crash workshop
 
-### Instalamos virtualenv
+Spanish-language workshop material paired with a working employee-management
+demo. The demo covers Django models, forms, authentication, administration,
+management commands, email hooks, and a Django REST Framework API.
 
-`pip install virtualenv`
+The application has been updated to Django 6 and Python 3.12. Secrets and host
+configuration come from the environment, API endpoints require staff access,
+passwords use Django's password validators and hashers, and email is scheduled
+only after the employee transaction commits.
 
-### Creamos el ambiente virtual
+## Setup
 
-`virtualenv workshop`
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+export DJANGO_SECRET_KEY=replace-me
+cd demo/miprimerproyecto
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
 
-### Activamos el ambiente virtual
+Create synthetic workshop records without assigning shared passwords:
 
-`source bin/activate`
+```bash
+python manage.py employee_generator --number 10
+```
 
-### Instalamos Django por primera vez
+## Test and lint
 
-(workshop)$: `pip install django`
+Run from the repository root:
 
-### Creamos el archivo requirements.txt
+```bash
+python -m ruff check demo/miprimerproyecto
+python -m pytest
+python demo/miprimerproyecto/manage.py check --deploy
+```
 
-(workshop)$: `pip freeze > requirements.txt`
+## Architecture
 
+- `app/`: employee domain, HTML forms/views, admin, and commands
+- `api/`: staff-only REST serializers and endpoints
+- `miprimerproyecto/`: environment-driven project settings and routing
+- `ejercicios/`: workshop exercises
+- `doc/`: workshop slide deck
 
-### (En caso de que sea un proyecto existente) Leemos el archivo requirements.txt
-
-(workshop)$: `pip install -r requirements.txt`
-
-### Iniciamos un nuevo proyecto
-(workshop)$: `django-admin startproject <nombre_proyecto>`
-
-### Dentro del proyecto
-
-### Corremos las migraciones iniciales de Django
-(workshop)$: `python manage.py migrate`
-
-### Iniciamos una nueva app
-(workshop)$: `python manage.py startapp movies`
-* Agrego mi app “movies” a installed apps
-
-### Corremos el servidor de Django
-(workshop)$: python manage.py runserver
-* Lo terminamos con Ctrl + C
-
-### Creamos un superusuario
-(workshop)$: python manage.py createsuperuser
-
-### Creamos la primera vista “home” en nuestro archivo views.py de la app “movies”
-  
-### Creamos carpeta de “templates” en el proyecto
-
-### Referenciamos la carpeta templates en APP_DIRS del archivo settings.py
-
-### Creamos modelos Employee y Role
-
-### Creamos las migraciones el servidor
-(workshop)$: `python manage.py makemigrations`
- 
-### Ejecutamos las migraciones 
- 
-(workshop)$: `python manage.py migrate`
-   
+CI verifies linting, migrations, tests with coverage, deployment checks,
+dependency consistency, and vulnerability auditing on each push and pull request.

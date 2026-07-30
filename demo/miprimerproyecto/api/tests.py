@@ -1,48 +1,69 @@
-# models test
-from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
-
-from api.serializers import EmployeeSerializer
-from app.management.commands.employee_generator import create_n_random_employees
+import pytest
 from app.models import Employee, Role
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+from rest_framework.test import APIClient
 
 
-# Create your tests here.
+@pytest.fixture
+def role(db):
+    return Role.objects.create(name="1")
 
 
-class BaseViewTestOne(APITestCase):
+@pytest.fixture
+def admin(db):
+    return get_user_model().objects.create_superuser(
+        "admin@example.com",
+        email="admin@example.com",
+        password="valid-test-password-42",
+    )
+
+
+@pytest.fixture
+def api_client(admin):
     client = APIClient()
-
-    def setUp(self):
-        # add test data
-        role = Role(name='Entry')
-        role.save()
-
-        create_n_random_employees(5)
+    client.force_authenticate(admin)
+    return client
 
 
-class GetAllEmployeesTestCase(BaseViewTestOne):
+def test_employee_api_requires_admin(db):
+    response = APIClient().get(reverse("employee-list-drf"), secure=True)
 
-    def test_employees_serializer(self):
-        """
+    assert response.status_code in {401, 403}
 
-        Esta prueba asegura que todos los empleados agregados en el setUp method
-        existen cuando hacemos la petición a la api /employees
 
-        python manage.py test <nombre_app>
-        python manage.py test api
+def test_admin_can_create_and_list_employee(api_client, role):
+    create_response = api_client.post(
+        reverse("employee-create-drf"),
+        {
+            "first_name": "Katherine",
+            "last_name": "Johnson",
+            "email": "katherine@example.com",
+            "password": "valid-test-password-42",
+            "salary": 10000,
+            "role": role.pk,
+        },
+        format="json",
+        secure=True,
+    )
 
-        """
-        # hit the API endpoint
-        response = self.client.get(
-            reverse("employee-list-drf", kwargs={})
-        )
-        # fetch the data from db
-        expected = Employee.objects.all()
-        serialized = EmployeeSerializer(expected, many=True)
+    assert create_response.status_code == 201, create_response.data
+    list_response = api_client.get(reverse("employee-list-drf"), secure=True)
+    assert list_response.status_code == 200
+    assert list_response.data[0]["user"]["first_name"] == "Katherine"
+    assert Employee.objects.get().user.check_password("valid-test-password-42")
 
-        self.assertEqual(True, True)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serialized.data)
 
+def test_summary_endpoint_returns_length(api_client, role):
+    user = get_user_model().objects.create_user(
+        "ada@example.com",
+        first_name="Ada",
+        password="valid-test-password-42",
+    )
+    Employee.objects.create(user=user, salary=8000, role=role)
+
+    response = api_client.get(reverse("employee-list-api"), secure=True)
+
+    assert response.status_code == 200
+    assert response.data["length"] == 1
+    assert response.data["profiles"][0]["user"]["first_name"] == "Ada"

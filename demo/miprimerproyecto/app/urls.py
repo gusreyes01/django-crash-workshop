@@ -1,12 +1,9 @@
-import profile
+from django.urls import path
 
-from django.contrib import admin
-from django.urls import path, include
-
-from app.views import employee_detail, employee_list, employee_create
+from app.views import employee_create, employee_detail, employee_list
 
 urlpatterns = [
-    path('create', employee_create, name='employee_create'),
-    path('list', employee_list, name='employee_list'),
-    path('detail/<pk>', employee_detail, name='employee_detail'),
+    path("create/", employee_create, name="employee_create"),
+    path("list/", employee_list, name="employee_list"),
+    path("detail/<int:employee_id>/", employee_detail, name="employee_detail"),
 ]

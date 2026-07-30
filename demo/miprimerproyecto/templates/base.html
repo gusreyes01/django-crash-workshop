@@ -1,19 +1,23 @@
-<html>
-
+<!doctype html>
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Django crash workshop</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: auto; max-width: 60rem; padding: 2rem; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border-bottom: 1px solid #ddd; padding: .75rem; text-align: left; }
+    .alert { border: 1px solid #286140; margin-bottom: 1rem; padding: .75rem; }
+    input, select, button { padding: .5rem; }
+  </style>
 </head>
 <body>
-
-{% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-        {{ message }}
-    </div>
-{% endfor %}
-
-{% block content %}
-{% endblock %}
+  {% for message in messages %}
+    <div class="alert" role="status">{{ message }}</div>
+  {% endfor %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 </body>
-
 </html>

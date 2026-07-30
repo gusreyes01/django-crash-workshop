@@ -1,19 +1,19 @@
+from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
-from app.logger import EmployeeLogger
 
-
-def send_mail_wrapper(**kwargs):
-
+def send_new_employee_email(employee) -> int:
+    """Send the welcome email using configured mail settings."""
     html_message = render_to_string(
-        kwargs['template'], kwargs['context'])
-
-    send_mail(kwargs['title'],
-              '',
-              '',
-              kwargs['recipients'],
-              html_message=html_message,
-              fail_silently=False)
-
-    EmployeeLogger.log('Sending new employee email')
+        "app/mail/new_employee_mail.html",
+        {"employee": employee},
+    )
+    return send_mail(
+        "New employee",
+        f"Employee {employee} was created.",
+        settings.DEFAULT_FROM_EMAIL,
+        [employee.user.email],
+        html_message=html_message,
+        fail_silently=False,
+    )

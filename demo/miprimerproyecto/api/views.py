@@ -1,40 +1,35 @@
-from django.http import JsonResponse
-# Create your views here.
-from rest_framework import generics
-from rest_framework.permissions import IsAdminUser
-
-from api.decorators import http_basic_auth
-from api.serializers import EmployeeSerializer
 from app.models import Employee
+from rest_framework import generics
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+
+from api.serializers import EmployeeCreateSerializer, EmployeeSerializer
 
 
-@http_basic_auth
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
 def employee_list_api(request):
-    employees_list = [x.as_list_item_dict() for x in Employee.objects.all()]
-    return JsonResponse({'profiles': employees_list, 'length': len(employees_list)})
+    del request
+    employees = Employee.objects.select_related("user", "role")
+    data = EmployeeSerializer(employees, many=True).data
+    return Response({"profiles": data, "length": len(data)})
 
 
 class EmployeeInstanceView(generics.RetrieveAPIView):
-    """
-    Regresa un empleado.
-    Tambien permite editar y eliminar
-    """
-    model = Employee
     serializer_class = EmployeeSerializer
-    queryset = Employee.objects.all()
-    lookup_field = 'id'
+    queryset = Employee.objects.select_related("user", "role")
+    lookup_url_kwarg = "employee_id"
     permission_classes = (IsAdminUser,)
 
 
 class EmployeeList(generics.ListAPIView):
-    """
-    Lista todos los empleados.
-    """
-    queryset = Employee.objects.all()
+    queryset = Employee.objects.select_related("user", "role")
     serializer_class = EmployeeSerializer
     permission_classes = (IsAdminUser,)
 
 
 class EmployeeCreate(generics.CreateAPIView):
-    model = Employee
-    serializer_class = EmployeeSerializer
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeCreateSerializer
+    permission_classes = (IsAdminUser,)

@@ -11,7 +11,7 @@
         <table class="table">
             {% for employee in employees %}
                 <tr>
-                    <td><a href="{% url 'employee_detail' employee.id %}">{{ employee.get_full_name }}</a></td>
+                    <td><a href="{% url 'employee_detail' employee.id %}">{{ employee.full_name }}</a></td>
                     <td>${{ employee.salary|intcomma }}</td>
 
                 </tr>

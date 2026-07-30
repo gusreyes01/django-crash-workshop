@@ -1,30 +1,20 @@
 import csv
-from datetime import datetime
-
-from django.core.management.base import BaseCommand
+from datetime import date
 
 from app.models import Employee
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Export CSV exmployees'
-
-    def add_arguments(self, parser):
-        pass
+    help = "Export employees as CSV"
 
     def handle(self, *args, **options):
-        date_string = datetime.now().strftime('%m-%d-%Y')
-        filename = "employees_{}.csv".format(date_string)
+        filename = f"employees_{date.today().isoformat()}.csv"
 
-        with open(filename, "w") as file:
+        with open(filename, "w", encoding="utf-8", newline="") as file:
             writer = csv.writer(file)
-
-            # Iteramos sobre todos los empleados
-            employees = Employee.objects.all()
-            writer.writerow(['pk', 'name', 'salary'])
-
+            employees = Employee.objects.select_related("user", "role")
+            writer.writerow(["pk", "name", "salary"])
             for employee in employees:
-
-                writer.writerow([employee.pk, employee.get_full_name, employee.salary])
-
-            self.stdout.write('Successfully generated CSV Report with name {}'.format(filename))
+                writer.writerow([employee.pk, employee.full_name, employee.salary])
+        self.stdout.write(self.style.SUCCESS(f"Generated {filename}"))
